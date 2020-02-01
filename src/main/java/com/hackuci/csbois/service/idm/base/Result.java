@@ -20,7 +20,10 @@ public enum Result
     PASSWORD_CHARACTER_REQ     (13, "Password does not meet character requirements.", Status.OK),
     EMAIL_ALREADY_EXISTS       (16, "Email already in use.", Status.OK),
 
-    USER_REGISTERED_SUCCESSFULLY (110, "User registered successfully.", Status.OK);
+    USER_REGISTERED_SUCCESSFULLY (110, "User registered successfully.", Status.OK),
+
+    INCORRECT_PASSWORD  (11, "Passwords do not match.", Status.OK),
+    LOGIN_SUCCESSFUL    (120, "User logged in successfully", Status.OK);
 
     private final int    resultCode;
     private final String message;

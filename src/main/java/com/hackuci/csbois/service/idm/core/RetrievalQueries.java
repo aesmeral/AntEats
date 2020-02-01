@@ -15,7 +15,7 @@ public class RetrievalQueries {
 
         ResultSet rs = null;
         ServiceLogger.LOGGER.info("Building our query ...");
-        String query = "    SELECT email\n" +
+        String query = "    SELECT *\n" +
                        "    FROM user\n" +
                        "    WHERE email = ?\n";
         try {
