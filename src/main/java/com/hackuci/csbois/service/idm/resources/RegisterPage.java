@@ -5,11 +5,14 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.hackuci.csbois.service.idm.base.Result;
 import com.hackuci.csbois.service.idm.core.EmailPasswordHelper;
+import com.hackuci.csbois.service.idm.core.TwilioMessaging;
 import com.hackuci.csbois.service.idm.core.UserRecords;
 import com.hackuci.csbois.service.idm.logger.ServiceLogger;
 import com.hackuci.csbois.service.idm.model.RegisterRequestModel;
 import com.hackuci.csbois.service.idm.model.ResponseModel;
 import com.hackuci.csbois.service.idm.security.Crypto;
+import com.twilio.Twilio;
+import com.twilio.rest.api.v2010.account.Message;
 import org.apache.commons.codec.binary.Hex;
 
 import javax.ws.rs.*;
@@ -18,6 +21,8 @@ import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.io.IOException;
+
+
 
 @Path("register")
 public class RegisterPage {
@@ -122,7 +127,16 @@ public class RegisterPage {
         // --------------------------------------------------------------
 
         // Insert new user into user table of database
+        String ACCOUNT_SID = "";       // thinking putting it in IDM Service
+        String AUTH_TOKEN = "";        // thinking putting it in IDM Service
+        Twilio.init(ACCOUNT_SID,AUTH_TOKEN);
+        Message message = Message.creator(new com.twilio.type.PhoneNumber("+6267588643"),
+                                           new com.twilio.type.PhoneNumber("+18102420280"),
+                                            "Thank you for registering to our services").create();
+        System.out.println(message.getSid());
+        ServiceLogger.LOGGER.info(message.getSid());
         UserRecords.insertIntoUser(requestModel.getEmail(), encodedPassword, encodedSaltPW, encodedPhone, encodedSaltPhone);
+        TwilioMessaging.testMessage("+16267588643");
         responseModel = new ResponseModel(Result.USER_REGISTERED_SUCCESSFULLY);
         ServiceLogger.LOGGER.info(responseModel.getMessage());
         return responseModel.buildResponse();
