@@ -1,0 +1,22 @@
+serviceConfig:
+    scheme: http://
+    hostName: 0.0.0.0
+    port: 1337
+    path:
+
+loggerConfig:
+    outputDir: ./logs/
+    outputFile: test.log
+
+databaseConfig:
+    dbUsername:
+    dbPassword:
+    dbHostname:
+    dbPort:
+    dbDriver:
+    dbName:
+    dbSettings: ?autoReconnect=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=PST
+
+sessionConfig:
+    timeout: 600000
+    expiration: 1800000
