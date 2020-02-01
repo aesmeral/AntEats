@@ -9,24 +9,15 @@ public class RequestModel {
     @JsonProperty(value = "email", required = true)
     private String email;
 
-    @JsonProperty(value = "password", required = true)
-    private String password;
-
     public RequestModel() {
     }
 
     @JsonCreator
-    public RequestModel(@JsonProperty(value="email",required = true) String email,
-                        @JsonProperty(value = "password", required = true) String password) {
+    public RequestModel(@JsonProperty(value="email",required = true) String email) {
         this.email = email;
-        this.password = password;
     }
 
     public String getEmail() {
         return email;
-    }
-
-    public String getPassword() {
-        return password;
     }
 }
