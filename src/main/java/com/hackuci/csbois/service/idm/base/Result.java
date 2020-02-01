@@ -18,7 +18,9 @@ public enum Result
 
     PASSWORD_TOO_SHORT_OR_LONG (12, "Password does not meet length requirements.", Status.OK),
     PASSWORD_CHARACTER_REQ     (13, "Password does not meet character requirements.", Status.OK),
-    EMAIL_ALREADY_EXISTS       (16, "Email already in use.", Status.OK);
+    EMAIL_ALREADY_EXISTS       (16, "Email already in use.", Status.OK),
+
+    USER_REGISTERED_SUCCESSFULLY (110, "User registered successfully.", Status.OK);
 
     private final int    resultCode;
     private final String message;

@@ -5,9 +5,9 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.hackuci.csbois.service.idm.base.Result;
 import com.hackuci.csbois.service.idm.core.EmailPasswordHelper;
+import com.hackuci.csbois.service.idm.core.UserRecords;
 import com.hackuci.csbois.service.idm.logger.ServiceLogger;
-import com.hackuci.csbois.service.idm.model.Data.LoginRegisterRequestModel;
-import com.hackuci.csbois.service.idm.model.RequestModel;
+import com.hackuci.csbois.service.idm.model.RegisterRequestModel;
 import com.hackuci.csbois.service.idm.model.ResponseModel;
 import com.hackuci.csbois.service.idm.security.Crypto;
 import org.apache.commons.codec.binary.Hex;
@@ -25,12 +25,12 @@ public class RegisterPage {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response registerResponse(@Context HttpHeaders headers, String jsonText) {
-        LoginRegisterRequestModel requestModel;
+        RegisterRequestModel requestModel;
         ResponseModel responseModel;
         ObjectMapper mapper = new ObjectMapper();
 
         try {
-            requestModel = mapper.readValue(jsonText, LoginRegisterRequestModel.class);
+            requestModel = mapper.readValue(jsonText, RegisterRequestModel.class);
         }
         catch (IOException e) {
             e.printStackTrace();
@@ -59,38 +59,44 @@ public class RegisterPage {
         // resultCode = -12; 400 Bad request; "Password has invalid length."
         if(requestModel.getPassword() == null || requestModel.getPassword().length == 0) {
             responseModel = new ResponseModel(Result.PASSWORD_INVALID_LENGTH);
+            ServiceLogger.LOGGER.warning(responseModel.getMessage());
             return responseModel.buildResponse();
         }
 
         // resultCode = -10; 400 Bad request; "Email address has invalid length."
         if(requestModel.getEmail() == null || requestModel.getEmail().length() == 0) {
             responseModel = new ResponseModel(Result.EMAIL_INVALID_LENGTH);
+            ServiceLogger.LOGGER.warning(responseModel.getMessage());
             return responseModel.buildResponse();
         }
 
         // resultCode = -11; 400 Bad request; "Email address has invalid format."
         if(!EmailPasswordHelper.isValidEmailFormat(requestModel.getEmail())) {
             responseModel = new ResponseModel(Result.EMAIL_INVALID_FORMAT);
+            ServiceLogger.LOGGER.warning(responseModel.getMessage());
             return responseModel.buildResponse();
         }
 
         // resultCode = 12; 200 OK; "Password does not meet length requirements."
         if(!EmailPasswordHelper.isValidPasswordLength(requestModel.getPassword())) {
             responseModel = new ResponseModel(Result.PASSWORD_TOO_SHORT_OR_LONG);
+            ServiceLogger.LOGGER.warning(responseModel.getMessage());
             return responseModel.buildResponse();
         }
 
         // resultCode = 13; 200 OK; "Password does not meet character requirements."
         if(!EmailPasswordHelper.isValidPasswordContents(requestModel.getPassword())) {
             responseModel = new ResponseModel(Result.PASSWORD_CHARACTER_REQ);
+            ServiceLogger.LOGGER.warning(responseModel.getMessage());
             return responseModel.buildResponse();
         }
 
         // resultCode = 16; 200 OK; "Email already in use."
-//        if(dbAlreadyContainsEmail(requestModel.getEmail())) {
-//            responseModel = new ResponseModel(Result.EMAIL_ALREADY_EXISTS);
-//            return responseModel.buildResponse();
-//        }
+        if(EmailPasswordHelper.userFound(requestModel.getEmail())) {
+            responseModel = new ResponseModel(Result.EMAIL_ALREADY_EXISTS);
+            ServiceLogger.LOGGER.warning(responseModel.getMessage());
+            return responseModel.buildResponse();
+        }
 
         // resultCode = 110; 200 OK; "User registered successfully."
         // --------------------Salt & hash password----------------------
@@ -102,11 +108,23 @@ public class RegisterPage {
         byte[] hashedPassword = Crypto.hashPassword(password, salt, Crypto.ITERATIONS, Crypto.KEY_LENGTH);
 
         // Encode salt & password; these values are stored
-        String encodedSalt = Hex.encodeHexString(salt);
+        String encodedSaltPW = Hex.encodeHexString(salt);
         String encodedPassword = Hex.encodeHexString(hashedPassword);
+
+        // Salt and hash phone_number too
+        byte[] numSalt = Crypto.genSalt();
+
+        char[] phoneNumber = requestModel.getPhoneNumber();
+        byte[] hashedPhone = Crypto.hashPassword(phoneNumber, numSalt, Crypto.ITERATIONS, Crypto.KEY_LENGTH);
+
+        String encodedSaltPhone = Hex.encodeHexString(numSalt);
+        String encodedPhone = Hex.encodeHexString(hashedPhone);
         // --------------------------------------------------------------
 
         // Insert new user into user table of database
-        return null;
+        UserRecords.insertIntoUser(requestModel.getEmail(), encodedPassword, encodedSaltPW, encodedPhone, encodedSaltPhone);
+        responseModel = new ResponseModel(Result.USER_REGISTERED_SUCCESSFULLY);
+        ServiceLogger.LOGGER.info(responseModel.getMessage());
+        return responseModel.buildResponse();
     }
 }

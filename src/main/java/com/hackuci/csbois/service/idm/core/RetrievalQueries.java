@@ -22,6 +22,7 @@ public class RetrievalQueries {
             ServiceLogger.LOGGER.info("Preparing our query ...");
             PreparedStatement ps = IDMService.getCon().prepareStatement(query);
             ServiceLogger.LOGGER.info("Running our query ...");
+            ps.setString(1, email);
             rs = ps.executeQuery();
         } catch(SQLException e){
             ServiceLogger.LOGGER.info("Something went wrong with the query:\n " + query);

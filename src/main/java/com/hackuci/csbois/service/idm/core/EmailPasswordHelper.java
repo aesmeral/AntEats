@@ -1,5 +1,8 @@
 package com.hackuci.csbois.service.idm.core;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
 public class EmailPasswordHelper {
     /*
     Returns true if email is of valid format <email>@<domain>.<extension>, where <email> is only alphanumeric
@@ -9,6 +12,14 @@ public class EmailPasswordHelper {
         String regex = "^[a-zA-Z0-9_]+@[a-zA-Z0-9_]+\\.[a-zA-Z0-9_]+$";
         if(email.matches(regex)) return true;
         return false;
+    }
+    /*
+    Returns true if email is of length < 50 and not null or empty.
+    */
+    public static boolean isValidEmailLength(String email) {
+        if (email == null) return false;
+        if (email.equals("")) return false;
+        return email.length() <= 50;
     }
 
     /*
@@ -33,9 +44,15 @@ public class EmailPasswordHelper {
         return false;
     }
 
-//    public static boolean userFound(String email) {
-//        String retrievedEmail = UserRecords.retrieveUserValueByEmail(email, "email");
-//        if (email.equals(retrievedEmail)) return true;
-//        return false;
-//    }
+    public static boolean userFound(String email) {
+        try {
+            ResultSet rs = RetrievalQueries.getUser(email);
+            if (rs.next()) return true;
+            return false;
+        }
+        catch (SQLException e){
+            e.printStackTrace();
+            return false;
+        }
+    }
 }
