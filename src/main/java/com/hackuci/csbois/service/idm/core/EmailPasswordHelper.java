@@ -12,6 +12,15 @@ public class EmailPasswordHelper {
     }
 
     /*
+    Returns true if email is of length < 50 and not null or empty.
+    */
+    public static boolean isValidEmailLength(String email) {
+        if (email == null) return false;
+        if (email.equals("")) return false;
+        return email.length() <= 50;
+    }
+
+    /*
     Returns true if password is of length 7 <= length <= 16
      */
     public static boolean isValidPasswordLength (char[] password) {
@@ -34,7 +43,7 @@ public class EmailPasswordHelper {
     }
 
 //    public static boolean userFound(String email) {
-//        String retrievedEmail = UserRecords.retrieveUserValueByEmail(email, "email");
+//        String retrievedEmail = RetrievalQueries.getUser(email);
 //        if (email.equals(retrievedEmail)) return true;
 //        return false;
 //    }

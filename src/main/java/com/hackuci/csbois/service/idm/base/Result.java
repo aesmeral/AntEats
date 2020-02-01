@@ -10,7 +10,8 @@ public enum Result
     INTERNAL_SERVER_ERROR  (-1, "Internal Server Error.",  Status.INTERNAL_SERVER_ERROR),
 
     FOUND_USER             (10, "User found.",             Status.OK),
-    NO_USER_FOUND          (11, "Could not find user.",    Status.OK),
+    NO_USER_FOUND          (14, "Could not find user.",    Status.OK),
+    INCORRECT_PASSWORD     (11, "Password is incorrect.",  Status.OK),
 
     PASSWORD_INVALID_LENGTH (-12, "Password has invalid length.", Status.BAD_REQUEST),
     EMAIL_INVALID_FORMAT    (-11, "Email address has invalid format.", Status.BAD_REQUEST),
