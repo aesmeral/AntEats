@@ -21,7 +21,7 @@ import java.sql.SQLException;
 
 public class IDMService {
 
-    public static final String RESOURCE_PATH = "edu.uci.ics.tsamonte.service.idm.resources";
+    public static final String RESOURCE_PATH = "com.hackuci.csbois.service.idm.resources";
 
     public static IDMService service;
     private static ServiceConfigs serviceConfigs;

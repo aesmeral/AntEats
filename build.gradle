@@ -54,4 +54,4 @@ dependencies {
 
 // TODO: Change the main class name
 // Define the main class for the application
-mainClassName = 'com.hackuci.csbois.service.idm.Main'
+mainClassName = 'com.hackuci.csbois.service.idm.IDMService'
