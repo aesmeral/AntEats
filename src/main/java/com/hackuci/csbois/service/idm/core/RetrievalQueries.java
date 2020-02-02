@@ -54,7 +54,8 @@ public class RetrievalQueries {
         ResultSet rs = null;
         ServiceLogger.LOGGER.info("Building our query ...");
         String query = "    SELECT u.email,\n" +
-                       "    availability\n" +
+                       "    availability\n," +
+                       "    s.cost" +
                        "    FROM swipe AS s\n" +
                        "    INNER JOIN user_swipe AS usw ON usw.swipe_id = s.swipe_id\n" +
                        "    INNER JOIN user AS u ON u.email = usw.email\n" +

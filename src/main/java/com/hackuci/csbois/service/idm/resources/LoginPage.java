@@ -7,9 +7,7 @@ import com.hackuci.csbois.service.idm.base.Result;
 import com.hackuci.csbois.service.idm.core.RetrievalQueries;
 import com.hackuci.csbois.service.idm.logger.ServiceLogger;
 import com.hackuci.csbois.service.idm.model.LoginRequestModel;
-import com.hackuci.csbois.service.idm.model.RequestModel;
 import com.hackuci.csbois.service.idm.model.ResponseModel;
-import com.hackuci.csbois.service.idm.core.EmailPasswordHelper;
 import com.hackuci.csbois.service.idm.security.Crypto;
 import org.apache.commons.codec.DecoderException;
 import org.apache.commons.codec.binary.Hex;
@@ -40,7 +38,7 @@ public class LoginPage {
         LoginRequestModel requestModel;
         ResponseModel responseModel;
         ObjectMapper mapper = new ObjectMapper();
-
+        Response.ResponseBuilder builder;
         try {
             requestModel = mapper.readValue(jsonText, LoginRequestModel.class);
             ServiceLogger.LOGGER.info("Received [POST] login request.");
@@ -76,8 +74,10 @@ public class LoginPage {
             }
 
             responseModel = new ResponseModel(Result.LOGIN_SUCCESSFUL);
+            builder = responseModel.getResponse();
+            builder.header("email", email);
             ServiceLogger.LOGGER.info(responseModel.getMessage());
-            return responseModel.buildResponse();
+            return builder.build();
         }
         catch (IOException e) {
             if (e instanceof JsonParseException) {

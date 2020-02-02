@@ -8,11 +8,13 @@ public class SwipePosting {
     String name;
     @JsonProperty("availability")
     String availability;
-
+    @JsonProperty("cost")
+    float cost;
     @JsonCreator
-    public SwipePosting(String name, String availability) {
+    public SwipePosting(String name, String availability,float cost) {
         this.name = name;
         this.availability = availability;
+        this.cost = cost;
     }
 
     public String getName() {
@@ -21,5 +23,9 @@ public class SwipePosting {
 
     public String getAvailability() {
         return availability;
+    }
+
+    public float getCost() {
+        return cost;
     }
 }
