@@ -27,7 +27,6 @@ public class BuyRequest {
     @Produces(MediaType.APPLICATION_JSON)
     public Response buyRequest(@Context HttpHeaders headers, String jsonText)
     {
-        ServiceLogger.LOGGER.info("I AM HERE");
         Response.ResponseBuilder builder;
         BuyerRequestModel requestModel;
         ResponseModel responseModel;
@@ -93,6 +92,7 @@ public class BuyRequest {
         ServiceLogger.LOGGER.info("from: " + buyerPhoneNumber + " to: " + sellerPhoneNumber);
         TwilioMessaging.firstMeeting(sellerPhoneNumber,buyerPhoneNumber);
         builder = new ResponseModel(Result.SENT_TEXT_MESSAGE).getResponse();
+        builder.header("email", requestModel.getEmail());
         return builder.build();
     }
 }

@@ -11,6 +11,7 @@ public class SwipePosterRequestModel extends RequestModel {
     @JsonProperty(value = "cost", required = true)
     float cost;
 
+
     @JsonCreator
     public SwipePosterRequestModel(@JsonProperty(value = "email", required = true) String email,
                                    @JsonProperty(value = "availability") String availability,

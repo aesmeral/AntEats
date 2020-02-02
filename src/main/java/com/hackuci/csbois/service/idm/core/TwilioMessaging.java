@@ -1,4 +1,5 @@
 package com.hackuci.csbois.service.idm.core;
+
 import com.hackuci.csbois.service.idm.IDMService;
 import com.hackuci.csbois.service.idm.logger.ServiceLogger;
 import com.twilio.rest.api.v2010.account.Message;
@@ -27,3 +28,4 @@ public class TwilioMessaging {
                            "Your swipe buyer's number is: " + buyer).create();
     }
 }
+

@@ -10,11 +10,14 @@ public class SwipePosting {
     String availability;
     @JsonProperty("cost")
     float cost;
+    @JsonProperty("swipe_id")
+    String swipe_id;
     @JsonCreator
-    public SwipePosting(String name, String availability,float cost) {
+    public SwipePosting(String name, String availability,float cost,String swipe_id) {
         this.name = name;
         this.availability = availability;
         this.cost = cost;
+        this.swipe_id = swipe_id;
     }
 
     public String getName() {
@@ -24,8 +27,11 @@ public class SwipePosting {
     public String getAvailability() {
         return availability;
     }
-
     public float getCost() {
         return cost;
+    }
+
+    public String getSwipe_id() {
+        return swipe_id;
     }
 }

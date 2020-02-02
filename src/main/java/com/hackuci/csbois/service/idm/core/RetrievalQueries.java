@@ -55,7 +55,8 @@ public class RetrievalQueries {
         ServiceLogger.LOGGER.info("Building our query ...");
         String query = "    SELECT u.email,\n" +
                        "    availability\n," +
-                       "    s.cost" +
+                       "    s.cost,\n" +
+                       "    s.swipe_id" +
                        "    FROM swipe AS s\n" +
                        "    INNER JOIN user_swipe AS usw ON usw.swipe_id = s.swipe_id\n" +
                        "    INNER JOIN user AS u ON u.email = usw.email\n" +

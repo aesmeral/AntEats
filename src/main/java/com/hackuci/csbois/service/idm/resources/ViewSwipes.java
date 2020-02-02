@@ -29,7 +29,7 @@ public class ViewSwipes {
         ArrayList<SwipePosting> swipesList = new ArrayList<SwipePosting>();
         try {
             while (rs.next()) {
-                swipesList.add(new SwipePosting(rs.getString("u.email"), rs.getString("availability"),rs.getFloat("cost")));
+                swipesList.add(new SwipePosting(rs.getString("u.email"), rs.getString("availability"),rs.getFloat("cost"),rs.getString("s.swipe_id")));
             }
         } catch (SQLException e)
         {
