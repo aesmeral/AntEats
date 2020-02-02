@@ -53,4 +53,14 @@ public class ResponseModel
 
         return Response.status(result.getStatus()).entity(this).build();
     }
+    @JsonIgnore
+    public Response.ResponseBuilder getResponse()
+    {
+        ServiceLogger.LOGGER.info("Response being generated with Result: " + result);
+
+        if (result == null || result.getStatus() == Response.Status.INTERNAL_SERVER_ERROR)
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR);
+
+        return Response.status(result.getStatus()).entity(this);
+    }
 }

@@ -19,10 +19,11 @@ import java.util.ArrayList;
 public class ViewSwipes {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public Response viewSwipes(@Context HttpHeaders headers,@DefaultValue("0") @QueryParam("limit")int limit)
+    public Response viewSwipes(@Context HttpHeaders headers,@DefaultValue("10") @QueryParam("limit")int limit)
     {
         String email = headers.getHeaderString("email");
         SwipeListResponseModel responseModel = null;
+        Response.ResponseBuilder builder = null;
         ResultSet rs = RetrievalQueries.getSwipes(limit);
         ServiceLogger.LOGGER.info("Data was recieved.");
         ArrayList<SwipePosting> swipesList = new ArrayList<SwipePosting>();
@@ -46,6 +47,8 @@ public class ViewSwipes {
             SwipeData = swipesList.toArray(SwipeData);
             responseModel.setSwipes(SwipeData);
         }
-        return responseModel.buildResponse();
+        builder = responseModel.getResponse();
+        builder.header("email", "aresmeralda95@gmail.com");
+        return builder.build();
     }
 }

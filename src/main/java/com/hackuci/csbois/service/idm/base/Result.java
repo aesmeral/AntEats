@@ -25,8 +25,11 @@ public enum Result
     INCORRECT_PASSWORD  (11, "Passwords do not match.", Status.OK),
     LOGIN_SUCCESSFUL    (120, "User logged in successfully", Status.OK),
 
-    SWIPES_EXIST        (420, "Swipes have been found", Status.OK),
-    SWIPES_DO_NOT_EXIST (421,"There are no current swipes", Status.OK);
+    SWIPES_EXIST        (420, "Swipes have been found.", Status.OK),
+    SWIPES_DO_NOT_EXIST (421,"There are no current swipes.", Status.OK),
+
+    SWIPE_POST_SUCCESS (220, "Swipe was successfully posted", Status.OK),
+    SWIPE_POST_UNSUCCESSFUL (221, "Swipe post was unsuccessful",Status.OK);
 
     private final int    resultCode;
     private final String message;
