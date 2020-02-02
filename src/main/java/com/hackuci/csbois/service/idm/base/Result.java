@@ -29,8 +29,10 @@ public enum Result
     SWIPES_DO_NOT_EXIST (421,"There are no current swipes.", Status.OK),
 
     SWIPE_POST_SUCCESS (220, "Swipe was successfully posted", Status.OK),
-    SWIPE_POST_UNSUCCESSFUL (221, "Swipe post was unsuccessful",Status.OK);
+    SWIPE_POST_UNSUCCESSFUL (221, "Swipe post was unsuccessful",Status.OK),
 
+    SENT_TEXT_MESSAGE   (310,"Message was successfully sent through Twilio", Status.OK),
+    FAILED_TEXT_MESSAGE (311,"Message was not able to be sent", Status.OK);
     private final int    resultCode;
     private final String message;
     private final Status status;

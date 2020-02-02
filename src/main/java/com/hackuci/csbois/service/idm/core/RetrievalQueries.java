@@ -29,6 +29,25 @@ public class RetrievalQueries {
         }
         return rs;
     }
+    public static ResultSet getUserBySwipeID(String swipe_id)
+    {
+        ResultSet rs= null;
+        ServiceLogger.LOGGER.info("Building our query ...");
+        String query = "    SELECT email\n" +
+                       "    FROM user_swipe\n" +
+                       "    WHERE swipe_id = ?";
+        ServiceLogger.LOGGER.info(query);
+        try {
+            ServiceLogger.LOGGER.info("Preparing our query ... ");
+            PreparedStatement ps = IDMService.getCon().prepareStatement(query);
+            rs = ps.executeQuery();
+            ServiceLogger.LOGGER.info("Running our query ...");
+        } catch (SQLException e) {
+            ServiceLogger.LOGGER.info("Something went wrong with the query:\n " + query);
+            e.printStackTrace();
+        }
+        return rs;
+    }
     public static ResultSet getSwipes(int limit)
     {
         ResultSet rs = null;
