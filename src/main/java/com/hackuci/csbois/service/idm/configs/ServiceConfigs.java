@@ -34,6 +34,11 @@ public class ServiceConfigs {
     private String dbDriver;
     private String dbSettings;
 
+    // Twilio configs
+    private String ACCOUNT_SID;
+    private String AUTH_TOKEN;
+
+
     // If any DB configs are invalid, set this to false
     private boolean dbConfigValid = true;
 
@@ -157,6 +162,13 @@ public class ServiceConfigs {
             } else {
                 System.err.println("Database connection settings: " + dbSettings);
             }
+
+            // get tokens and whatever.
+            ACCOUNT_SID = cm.getTwilioConfig().get("ACCOUNT_SID");
+            System.err.println(ACCOUNT_SID);
+            AUTH_TOKEN = cm.getTwilioConfig().get("AUTH_TOKEN");
+            System.err.println(AUTH_TOKEN);
+
         }
     }
 
@@ -235,5 +247,13 @@ public class ServiceConfigs {
 
     public boolean isDbConfigValid() {
         return dbConfigValid;
+    }
+
+    public String getACCOUNT_SID() {
+        return ACCOUNT_SID;
+    }
+
+    public String getAUTH_TOKEN() {
+        return AUTH_TOKEN;
     }
 }

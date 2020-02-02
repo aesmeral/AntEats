@@ -5,6 +5,7 @@ import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import com.hackuci.csbois.service.idm.configs.ConfigsModel;
 import com.hackuci.csbois.service.idm.configs.ServiceConfigs;
 import com.hackuci.csbois.service.idm.logger.ServiceLogger;
+import com.twilio.Twilio;
 import org.glassfish.grizzly.http.server.HttpServer;
 import org.glassfish.jersey.grizzly2.httpserver.GrizzlyHttpServerFactory;
 import org.glassfish.jersey.internal.util.ExceptionUtils;
@@ -50,6 +51,9 @@ public class IDMService {
 
         // Initialize HTTP sever
         initHTTPServer();
+
+        // init twilio
+        initTwilio();
 
         ServiceLogger.LOGGER.config("Service initialized.");
     }
@@ -128,6 +132,14 @@ public class IDMService {
         return configs;
     }
 
+    private void initTwilio()
+    {
+        String ACCOUNT_SID = serviceConfigs.getACCOUNT_SID();
+        String AUTH_TOKEN = serviceConfigs.getAUTH_TOKEN();
+        ServiceLogger.LOGGER.info("Account SID: " + ACCOUNT_SID);
+        ServiceLogger.LOGGER.info("Auth_Token: " + AUTH_TOKEN);
+        Twilio.init(ACCOUNT_SID,AUTH_TOKEN);
+    }
     private void initLogging() {
         try {
             ServiceLogger.initLogger(serviceConfigs.getOutputDir(), serviceConfigs.getOutputFile());

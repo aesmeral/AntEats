@@ -7,6 +7,7 @@ public class ConfigsModel {
     private Map<String,String> loggerConfig;
     private Map<String,String> databaseConfig;
     private Map<String,String> sessionConfig;
+    private Map<String,String> twilioConfig;
 
     public ConfigsModel() { }
 
@@ -40,5 +41,12 @@ public class ConfigsModel {
 
     public void setSessionConfig(Map<String, String> sessionConfig) {
         this.sessionConfig = sessionConfig;
+    }
+
+    public Map<String, String> getTwilioConfig() {
+        return twilioConfig;
+    }
+    public void setTwilioConfig(Map<String, String> twilioConfig) {
+        this.twilioConfig = twilioConfig;
     }
 }
