@@ -136,8 +136,10 @@ public class IDMService {
     {
         String ACCOUNT_SID = serviceConfigs.getACCOUNT_SID();
         String AUTH_TOKEN = serviceConfigs.getAUTH_TOKEN();
+        String phoneNumber = serviceConfigs.getPhoneNumber();
         ServiceLogger.LOGGER.info("Account SID: " + ACCOUNT_SID);
         ServiceLogger.LOGGER.info("Auth_Token: " + AUTH_TOKEN);
+        ServiceLogger.LOGGER.info("Phone Number: " + phoneNumber);
         Twilio.init(ACCOUNT_SID,AUTH_TOKEN);
     }
     private void initLogging() {
@@ -209,5 +211,6 @@ public class IDMService {
     public static Connection getCon() {
         return con;
     }
+    public static String getPhoneNumber() { return serviceConfigs.getPhoneNumber(); }
 
 }

@@ -37,7 +37,7 @@ public class ServiceConfigs {
     // Twilio configs
     private String ACCOUNT_SID;
     private String AUTH_TOKEN;
-
+    private String phoneNumber;
 
     // If any DB configs are invalid, set this to false
     private boolean dbConfigValid = true;
@@ -168,6 +168,7 @@ public class ServiceConfigs {
             System.err.println(ACCOUNT_SID);
             AUTH_TOKEN = cm.getTwilioConfig().get("AUTH_TOKEN");
             System.err.println(AUTH_TOKEN);
+            phoneNumber = cm.getTwilioConfig().get("phoneNumber");
 
         }
     }
@@ -255,5 +256,9 @@ public class ServiceConfigs {
 
     public String getAUTH_TOKEN() {
         return AUTH_TOKEN;
+    }
+
+    public String getPhoneNumber() {
+        return phoneNumber;
     }
 }
