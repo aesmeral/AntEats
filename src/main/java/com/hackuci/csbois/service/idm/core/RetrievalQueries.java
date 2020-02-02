@@ -40,6 +40,7 @@ public class RetrievalQueries {
         try {
             ServiceLogger.LOGGER.info("Preparing our query ... ");
             PreparedStatement ps = IDMService.getCon().prepareStatement(query);
+            ps.setString(1,swipe_id);
             rs = ps.executeQuery();
             ServiceLogger.LOGGER.info("Running our query ...");
         } catch (SQLException e) {

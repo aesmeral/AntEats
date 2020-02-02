@@ -118,18 +118,13 @@ public class RegisterPage {
         String encodedPassword = Hex.encodeHexString(hashedPassword);
 
         // Salt and hash phone_number too
-        byte[] numSalt = Crypto.genSalt();
 
-        char[] phoneNumber = requestModel.getPhoneNumber();
-        byte[] hashedPhone = Crypto.hashPassword(phoneNumber, numSalt, Crypto.ITERATIONS, Crypto.KEY_LENGTH);
-
-        String encodedSaltPhone = Hex.encodeHexString(numSalt);
-        String encodedPhone = Hex.encodeHexString(hashedPhone);
         // --------------------------------------------------------------
+        // decided not to hash the phone number; its not that much of a sensitive data.
 
         // Insert new user into user table of database
         TwilioMessaging.testMessage("+16267588643");
-        UserRecords.insertIntoUser(requestModel.getEmail(), encodedPassword, encodedSaltPW, encodedPhone, encodedSaltPhone);
+        UserRecords.insertIntoUser(requestModel.getEmail(), encodedPassword, encodedSaltPW, new String(requestModel.getPhoneNumber()), null);
         responseModel = new ResponseModel(Result.USER_REGISTERED_SUCCESSFULLY);
         ServiceLogger.LOGGER.info(responseModel.getMessage());
         return responseModel.buildResponse();

@@ -6,12 +6,11 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.hackuci.csbois.service.idm.base.Result;
 import com.hackuci.csbois.service.idm.core.RetrievalQueries;
 import com.hackuci.csbois.service.idm.core.TwilioMessaging;
+import com.hackuci.csbois.service.idm.logger.ServiceLogger;
 import com.hackuci.csbois.service.idm.model.Data.BuyerRequestModel;
 import com.hackuci.csbois.service.idm.model.ResponseModel;
-import org.apache.commons.codec.DecoderException;
-import org.apache.commons.codec.binary.Hex;
 
-import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
@@ -22,12 +21,13 @@ import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-@Path("request")
+@Path("buy")
 public class BuyRequest {
-    @GET
+    @POST
     @Produces(MediaType.APPLICATION_JSON)
     public Response buyRequest(@Context HttpHeaders headers, String jsonText)
     {
+        ServiceLogger.LOGGER.info("I AM HERE");
         Response.ResponseBuilder builder;
         BuyerRequestModel requestModel;
         ResponseModel responseModel;
@@ -55,14 +55,20 @@ public class BuyRequest {
             return responseModel.buildResponse();
         }
 
-        String buyerPhoneNumber = getPhoneNumber(requestModel.getEmail());
-        String sellerEmail = null;
+        ResultSet buyerRS = RetrievalQueries.getUser(requestModel.getEmail());
         ResultSet swipeRS = RetrievalQueries.getUserBySwipeID(requestModel.getSwipe_id());
+        String buyerPhoneNumber = null;
+        String sellerEmail = null;
         try{
             if(swipeRS.next())
             {
                 sellerEmail = swipeRS.getString("email");
             }
+            if(buyerRS.next())
+            {
+                buyerPhoneNumber = buyerRS.getString("phone_number");
+            }
+
         } catch(SQLException e)
         {
             e.printStackTrace();
@@ -71,22 +77,22 @@ public class BuyRequest {
             builder = new ResponseModel(Result.FAILED_TEXT_MESSAGE).getResponse();
             builder.build();
         }
-        String sellerPhoneNumber = getPhoneNumber(sellerEmail);
+        ResultSet sellerRS = RetrievalQueries.getUser(sellerEmail);
+        String sellerPhoneNumber = null;
+        try {
+            if(sellerRS.next())
+            {
+                sellerPhoneNumber = sellerRS.getString("phone_number");
+            }
+        } catch (SQLException e)
+        {
+            e.printStackTrace();
+        }
+        buyerPhoneNumber = "+1" + buyerPhoneNumber;
+        sellerPhoneNumber = "+1" + sellerPhoneNumber;
+        ServiceLogger.LOGGER.info("from: " + buyerPhoneNumber + " to: " + sellerPhoneNumber);
         TwilioMessaging.firstMeeting(sellerPhoneNumber,buyerPhoneNumber);
         builder = new ResponseModel(Result.SENT_TEXT_MESSAGE).getResponse();
         return builder.build();
-    }
-    private String getPhoneNumber(String email) {
-        try {
-            ResultSet rs = RetrievalQueries.getUser(email);
-            if(rs.next()) {
-                byte[] password_salt = Hex.decodeHex(rs.getString("password_salt"));
-
-            }
-        }
-        catch (SQLException | DecoderException e) {
-            e.printStackTrace();
-        }
-        return null;
     }
 }
